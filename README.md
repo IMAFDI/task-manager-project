@@ -1,4 +1,3 @@
-```markdown
 # 🧩 Task Manager Microservices with Kafka Integration
 
 A Python-based microservices project built with Flask that demonstrates asynchronous event-driven communication using Apache Kafka. It consists of two independent services:
@@ -22,19 +21,17 @@ A Python-based microservices project built with Flask that demonstrates asynchro
 ## 🧱 Architecture
 
 ```
-
 +--------------------+            +------------------------+
-\| Flask App          |            | Flask Logger Service   |
-\| (Producer)         |            | (Consumer)             |
-\| task\_service       |            | logger\_service         |
-\| Port 5001          |            | Port 5002              |
+| Flask App          |            | Flask Logger Service   |
+| (Producer)         |            | (Consumer)             |
+| task_service       |            | logger_service         |
+| Port 5001          |            | Port 5002              |
 +--------------------+            +------------------------+
-\                            /
-\                          /
-\------->  localhost:9092 <---------
-(Docker: Kafka + Zookeeper)
-
-````
+           \                            /
+            \                          /
+             ------->  localhost:9092 <---------
+                      (Docker: Kafka + Zookeeper)
+```
 
 ---
 
@@ -62,7 +59,7 @@ A Python-based microservices project built with Flask that demonstrates asynchro
 ```bash
 git clone https://github.com/imafdi/task-manager-kafka.git
 cd task-manager-kafka
-````
+```
 
 ### 2️⃣ Start Kafka with Docker
 
@@ -84,7 +81,7 @@ Create virtual environments and install dependencies for each service.
 cd task_service
 python -m venv .venv
 .venv\Scripts\activate      # Windows
-# source .venv/bin/activate # Linux/Mac
+# source .venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 python app.py
 ```
@@ -95,7 +92,7 @@ python app.py
 cd logger_service
 python -m venv .venv
 .venv\Scripts\activate      # Windows
-# source .venv/bin/activate # Linux/Mac
+# source .venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 python app.py
 ```
@@ -106,19 +103,19 @@ python app.py
 
 ### Task Manager API (`http://localhost:5001`)
 
-| Method | Endpoint      | Description             |
-| ------ | ------------- | ----------------------- |
-| GET    | `/tasks`      | List all tasks          |
-| POST   | `/tasks`      | Create a new task       |
-| PUT    | `/tasks/<id>` | Update an existing task |
-| DELETE | `/tasks/<id>` | Delete a task           |
+| Method | Endpoint       | Description             |
+|--------|----------------|-------------------------|
+| GET    | `/tasks`       | List all tasks          |
+| POST   | `/tasks`       | Create a new task       |
+| PUT    | `/tasks/<id>`  | Update an existing task |
+| DELETE | `/tasks/<id>`  | Delete a task           |
 
 ---
 
 ## 🌐 Logger UI (`http://localhost:5002`)
 
 | Page                   | Description                                |
-| ---------------------- | ------------------------------------------ |
+|------------------------|--------------------------------------------|
 | `/kafka-events`        | Shows live Kafka events (from memory only) |
 | `/stored-events`       | Shows all persisted events from SQLite     |
 | `/clear-memory-events` | Clears in-memory (live) events only        |
@@ -129,8 +126,8 @@ python app.py
 
 > Store these in the `/screenshots/` directory.
 
-| Task Manager UI                     | Logger Service UI                       |
-| ----------------------------------- | --------------------------------------- |
+| Task Manager UI                      | Logger Service UI                      |
+|-------------------------------------|----------------------------------------|
 | ![task-ui](screenshots/task-ui.png) | ![logger-ui](screenshots/logger-ui.png) |
 
 ---
@@ -183,12 +180,12 @@ docker-compose up --build
 
 ## 📌 Future Improvements
 
-* Add Swagger/OpenAPI docs
-* Dockerize both Flask apps fully
-* Switch to PostgreSQL or MySQL for production
-* Add authentication to Task Manager
-* Enable WebSocket for real-time UI updates
-* Add unit and integration tests
+- Add Swagger/OpenAPI docs  
+- Dockerize both Flask apps fully  
+- Switch to PostgreSQL or MySQL for production  
+- Add authentication to Task Manager  
+- Enable WebSocket for real-time UI updates  
+- Add unit and integration tests
 
 ---
 
@@ -200,8 +197,6 @@ MIT License. See [LICENSE](LICENSE) for full details.
 
 ## 👨‍💻 Author
 
-**Abadullah Faridi**
-📧 [abadullahfaridi40@gmail.com](mailto:abadullahfaridi40@gmail.com)
+**Abadullah Faridi**  
+📧 [abadullahfaridi40@gmail.com](mailto:abadullahfaridi40@gmail.com)  
 🔗 [LinkedIn](https://www.linkedin.com/in/abadullahfaridi)
-
-```
