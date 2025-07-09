@@ -1,37 +1,44 @@
+Here’s your updated and **corrected** `README.md` with adjustments based on everything we've done so far:
+
+---
+
+```markdown
 # 🧩 Task Manager Microservices with Kafka Integration
 
 A Python-based microservices project built with Flask that demonstrates asynchronous event-driven communication using Apache Kafka. It consists of two independent services:
 
 - **Task Manager Service** (Producer): A RESTful API that allows users to manage tasks and publish task-related events.
-- **Logger Service** (Consumer): A service that listens to Kafka events and logs them in both memory and a persistent SQLite database.
+- **Logger Service** (Consumer): A service that listens to Kafka events and logs them both in-memory (for live view) and persistently in a SQLite database.
 
 ---
 
 ## 🔧 Tech Stack
 
 - **Backend**: Python, Flask, SQLAlchemy
-- **Database**: SQLite
-- **Messaging**: Apache Kafka
-- **UI**: Bootstrap (Jinja2 Templates)
+- **Database**: SQLite (for logger service)
+- **Messaging**: Apache Kafka (via Docker)
+- **UI**: Bootstrap (with Jinja2 templates)
 - **Containerization**: Docker (Kafka + Zookeeper)
-- **Others**: threading, kafka-python
+- **Other**: kafka-python, threading, event buffers
 
 ---
 
 ## 🧱 Architecture
 
 ```
+
 +--------------------+            +------------------------+
-| Flask App          |            | Flask Logger Service   |
-| (Producer)         |            | (Consumer)             |
-| task_service       |            | logger_service         |
-| Port 5001          |            | Port 5002              |
+\| Flask App          |            | Flask Logger Service   |
+\| (Producer)         |            | (Consumer)             |
+\| task\_service       |            | logger\_service         |
+\| Port 5001          |            | Port 5002              |
 +--------------------+            +------------------------+
-           \                            /
-            \                          /
-             ------->  localhost:9092 <---------
-                      (Docker: Kafka + Zookeeper)
-```
+\                            /
+\                          /
+\------->  localhost:9092 <---------
+(Docker: Kafka + Zookeeper)
+
+````
 
 ---
 
@@ -40,14 +47,15 @@ A Python-based microservices project built with Flask that demonstrates asynchro
 ### ✅ Task Manager (Producer) — `localhost:5001`
 
 - Create, update, and delete tasks
-- Publishes events to Kafka topic: `task-events`
+- Publishes JSON events to Kafka topic: `task-events`
 
 ### 📄 Logger Service (Consumer) — `localhost:5002`
 
-- Consumes task events from Kafka
-- Stores all events in SQLite (`stored-events` view)
-- Displays real-time, in-memory events (`kafka-events` view)
-- Supports clearing real-time events manually
+- Consumes task events from Kafka in real-time
+- Stores all events in SQLite (`stored-events`)
+- Displays **live (in-memory)** Kafka events (`kafka-events`)
+- Manual option to clear **live memory-only** events
+- Stored events **remain preserved in DB**
 
 ---
 
@@ -56,40 +64,40 @@ A Python-based microservices project built with Flask that demonstrates asynchro
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/task-manager-kafka.git
+git clone https://github.com/imafdi/task-manager-kafka.git
 cd task-manager-kafka
-```
+````
 
 ### 2️⃣ Start Kafka with Docker
 
-Ensure Docker is installed, then run:
+Make sure Docker is installed. Run Kafka and Zookeeper:
 
 ```bash
 docker-compose -f docker-compose-kafka.yml up -d
 ```
 
-Kafka should now be available at `localhost:9092`.
+Kafka should now be running on `localhost:9092`.
 
 ### 3️⃣ Install Python Dependencies
 
-Create virtual environments and install requirements separately for both services.
+Create virtual environments and install dependencies for both services.
 
-#### Task Manager Service (Producer)
+#### ➤ Task Manager Service
 
 ```bash
 cd task_service
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate      # Windows
 pip install -r requirements.txt
 python app.py
 ```
 
-#### Logger Service (Consumer)
+#### ➤ Logger Service
 
 ```bash
 cd logger_service
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate      # Windows
 pip install -r requirements.txt
 python app.py
 ```
@@ -98,10 +106,10 @@ python app.py
 
 ## 📬 API Endpoints
 
-### Task Manager API (`localhost:5001`)
+### Task Manager API (`http://localhost:5001`)
 
 | Method | Endpoint      | Description             |
-|--------|---------------|-------------------------|
+| ------ | ------------- | ----------------------- |
 | GET    | `/tasks`      | List all tasks          |
 | POST   | `/tasks`      | Create a new task       |
 | PUT    | `/tasks/<id>` | Update an existing task |
@@ -109,37 +117,40 @@ python app.py
 
 ---
 
-## 🌐 Logger UI (`localhost:5002`)
+## 🌐 Logger UI (`http://localhost:5002`)
 
-- `http://localhost:5002/kafka-events` — View live Kafka events (in-memory)
-- `http://localhost:5002/stored-events` — View stored Kafka events (from DB)
-- `http://localhost:5002/clear-events` — Clear live Kafka events manually
+| Page                   | Description                                |
+| ---------------------- | ------------------------------------------ |
+| `/kafka-events`        | Shows live Kafka events (from memory only) |
+| `/stored-events`       | Shows all persisted events from SQLite     |
+| `/clear-memory-events` | Clears in-memory (live) events only        |
 
 ---
 
-## 🖼️ Sample Screenshots
+## 🖼️ Screenshots
 
-> Add UI screenshots in the `/screenshots/` directory.
+> Store these in `/screenshots/` directory.
 
 | Task Manager UI                     | Logger Service UI                       |
-|------------------------------------|-----------------------------------------|
+| ----------------------------------- | --------------------------------------- |
 | ![task-ui](screenshots/task-ui.png) | ![logger-ui](screenshots/logger-ui.png) |
 
 ---
 
 ## 🐳 Docker Support (Optional)
 
-To add full Docker support:
+To run all services using Docker:
 
-### 1. Add Dockerfiles
-
-Create a `Dockerfile` in both `task_service/` and `logger_service/`.
-
-### 2. Create a `docker-compose.yml` for All Services
+### Sample `docker-compose.yml`
 
 ```yaml
 version: '3.8'
 services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+
   kafka:
     image: bitnami/kafka:latest
     ports:
@@ -148,11 +159,6 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    ports:
-      - "2181:2181"
 
   task_service:
     build: ./task_service
@@ -169,7 +175,7 @@ services:
       - kafka
 ```
 
-Then run:
+Run everything:
 
 ```bash
 docker-compose up --build
@@ -179,25 +185,30 @@ docker-compose up --build
 
 ## 📌 Future Improvements
 
-- ✅ Add user authentication
-- ✅ Swagger/OpenAPI documentation
-- ✅ Add pagination and filtering to event views
-- ✅ Dockerize both services
-- ✅ Deploy using Kubernetes
-- ✅ Upgrade to PostgreSQL or MySQL in production
-- ✅ Real-time frontend updates (WebSockets)
-- ✅ Add unit and integration tests
+* Add Swagger/OpenAPI docs
+* Dockerize both Flask apps fully
+* Switch to PostgreSQL or MySQL for prod
+* Add authentication for Task Manager
+* Enable WebSocket for live updates
+* Add unit + integration tests
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
 ## 👨‍💻 Author
 
-**Abadullah Faridi**  
-📧 [abadullahfaridi40@gmail.com](mailto:abadullahfaridi40@gmail.com)  
+**Abadullah Faridi**
+📧 [abadullahfaridi40@gmail.com](mailto:abadullahfaridi40@gmail.com)
 🔗 [LinkedIn](https://www.linkedin.com/in/abadullahfaridi)
+
+```
+
+---
+
+Let me know if you'd like the README broken into actual files like `README.md`, `docker-compose.yml`, or if you want help creating `Dockerfile` templates too.
+```
