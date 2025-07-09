@@ -21,16 +21,16 @@ A Python-based microservices project built with Flask that demonstrates asynchro
 ## 🧱 Architecture
 
 ```
-+--------------------+            +------------------------+
-| Flask App          |            | Flask Logger Service   |
-| (Producer)         |            | (Consumer)             |
-| task_service       |            | logger_service         |
-| Port 5001          |            | Port 5002              |
-+--------------------+            +------------------------+
-           \                            /
-            \                          /
++--------------------+                 +------------------------+
+| Flask App          |                 | Flask Logger Service   |
+| (Producer)         |                 | (Consumer)             |
+| task_service       |                 | logger_service         |
+| Port 5001          |                 | Port 5002              |
++--------------------+                 +------------------------+
+           \                                     /
+            \                                   /
              ------->  localhost:9092 <---------
-                      (Docker: Kafka + Zookeeper)
+                 (Docker: Kafka + Zookeeper)
 ```
 
 ---
@@ -199,4 +199,4 @@ MIT License. See [LICENSE](LICENSE) for full details.
 
 **Abadullah Faridi**  
 📧 [abadullahfaridi40@gmail.com](mailto:abadullahfaridi40@gmail.com)  
-🔗 [LinkedIn](https://www.linkedin.com/in/abadullahfaridi)
+🔗 [LinkedIn](https://www.linkedin.com/in/abadullah-faridi/)
