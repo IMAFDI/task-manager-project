@@ -1,6 +1,3 @@
-Here’s your updated and **corrected** `README.md` with adjustments based on everything we've done so far:
-
----
 
 ```markdown
 # 🧩 Task Manager Microservices with Kafka Integration
