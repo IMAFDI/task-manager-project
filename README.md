@@ -1,4 +1,3 @@
-
 ```markdown
 # 🧩 Task Manager Microservices with Kafka Integration
 
@@ -11,12 +10,12 @@ A Python-based microservices project built with Flask that demonstrates asynchro
 
 ## 🔧 Tech Stack
 
-- **Backend**: Python, Flask, SQLAlchemy
-- **Database**: SQLite (for logger service)
-- **Messaging**: Apache Kafka (via Docker)
-- **UI**: Bootstrap (with Jinja2 templates)
-- **Containerization**: Docker (Kafka + Zookeeper)
-- **Other**: kafka-python, threading, event buffers
+- **Backend**: Python, Flask, SQLAlchemy  
+- **Database**: SQLite (for logger service)  
+- **Messaging**: Apache Kafka (via Docker)  
+- **UI**: Bootstrap + Jinja2 Templates  
+- **Containerization**: Docker (Kafka + Zookeeper)  
+- **Others**: kafka-python, threading, event buffers
 
 ---
 
@@ -67,7 +66,7 @@ cd task-manager-kafka
 
 ### 2️⃣ Start Kafka with Docker
 
-Make sure Docker is installed. Run Kafka and Zookeeper:
+Make sure Docker is installed. Then start Kafka and Zookeeper:
 
 ```bash
 docker-compose -f docker-compose-kafka.yml up -d
@@ -77,7 +76,7 @@ Kafka should now be running on `localhost:9092`.
 
 ### 3️⃣ Install Python Dependencies
 
-Create virtual environments and install dependencies for both services.
+Create virtual environments and install dependencies for each service.
 
 #### ➤ Task Manager Service
 
@@ -85,6 +84,7 @@ Create virtual environments and install dependencies for both services.
 cd task_service
 python -m venv .venv
 .venv\Scripts\activate      # Windows
+# source .venv/bin/activate # Linux/Mac
 pip install -r requirements.txt
 python app.py
 ```
@@ -95,6 +95,7 @@ python app.py
 cd logger_service
 python -m venv .venv
 .venv\Scripts\activate      # Windows
+# source .venv/bin/activate # Linux/Mac
 pip install -r requirements.txt
 python app.py
 ```
@@ -126,7 +127,7 @@ python app.py
 
 ## 🖼️ Screenshots
 
-> Store these in `/screenshots/` directory.
+> Store these in the `/screenshots/` directory.
 
 | Task Manager UI                     | Logger Service UI                       |
 | ----------------------------------- | --------------------------------------- |
@@ -136,9 +137,9 @@ python app.py
 
 ## 🐳 Docker Support (Optional)
 
-To run all services using Docker:
+To run everything (Kafka, Task Manager, Logger) via Docker:
 
-### Sample `docker-compose.yml`
+### `docker-compose.yml`
 
 ```yaml
 version: '3.8'
@@ -172,7 +173,7 @@ services:
       - kafka
 ```
 
-Run everything:
+To run all services:
 
 ```bash
 docker-compose up --build
@@ -184,16 +185,16 @@ docker-compose up --build
 
 * Add Swagger/OpenAPI docs
 * Dockerize both Flask apps fully
-* Switch to PostgreSQL or MySQL for prod
-* Add authentication for Task Manager
-* Enable WebSocket for live updates
-* Add unit + integration tests
+* Switch to PostgreSQL or MySQL for production
+* Add authentication to Task Manager
+* Enable WebSocket for real-time UI updates
+* Add unit and integration tests
 
 ---
 
 ## 📄 License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT License. See [LICENSE](LICENSE) for full details.
 
 ---
 
@@ -203,9 +204,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 📧 [abadullahfaridi40@gmail.com](mailto:abadullahfaridi40@gmail.com)
 🔗 [LinkedIn](https://www.linkedin.com/in/abadullahfaridi)
 
-```
-
----
-
-Let me know if you'd like the README broken into actual files like `README.md`, `docker-compose.yml`, or if you want help creating `Dockerfile` templates too.
 ```
